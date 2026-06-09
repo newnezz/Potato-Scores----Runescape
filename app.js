@@ -76,22 +76,62 @@ function getOverallSkill(skills) {
   return skills.find((skill) => skill.name === "Overall");
 }
 
+function getSkillLevel(skills, name) {
+  return skills.find((skill) => skill.name === name)?.level ?? 1;
+}
+
+function calculateCombatLevel(skills) {
+  const attack = getSkillLevel(skills, "Attack");
+  const strength = getSkillLevel(skills, "Strength");
+  const defence = getSkillLevel(skills, "Defence");
+  const hitpoints = getSkillLevel(skills, "Hitpoints");
+  const prayer = getSkillLevel(skills, "Prayer");
+  const ranged = getSkillLevel(skills, "Ranged");
+  const magic = getSkillLevel(skills, "Magic");
+
+  const base = Math.floor(
+    0.25 * (defence + hitpoints + Math.floor(prayer / 2))
+  );
+  const melee = Math.floor(0.325 * (attack + strength));
+  const range = Math.floor(0.325 * (Math.floor(ranged / 2) + ranged));
+  const mage = Math.floor(0.325 * (Math.floor(magic / 2) + magic));
+
+  return base + Math.max(melee, range, mage) + 1;
+}
+
 function renderSummary(playersData) {
   const overalls = playersData.map((data) =>
     getOverallSkill(data.skills)
   );
-  const maxLevel = Math.max(...overalls.map((s) => s.level));
-  const maxXp = Math.max(...overalls.map((s) => s.xp));
+  const combatLevels = playersData.map((data) =>
+    calculateCombatLevel(data.skills)
+  );
+  const maxCombat = Math.max(...combatLevels);
+  const tiedCombatWinners = combatLevels.filter(
+    (level) => level === maxCombat
+  ).length;
 
   summaryEl.innerHTML = playersData
     .map((data, index) => {
       const overall = overalls[index];
-      const isWinner =
-        overall.level === maxLevel || overall.xp === maxXp;
+      const combatLevel = combatLevels[index];
+      const isCombatWinner =
+        combatLevel === maxCombat && tiedCombatWinners === 1;
 
       return `
-        <article class="player-card${isWinner ? " winner-overall" : ""}">
+        <article class="player-card${isCombatWinner ? " winner-combat" : ""}">
           <h2 class="player-name">${data.name}</h2>
+          <div class="combat-level${isCombatWinner ? " winner" : ""}">
+            <img
+              class="combat-icon"
+              src="https://oldschool.runescape.wiki/images/Combat.png"
+              alt="Combat"
+              width="28"
+              height="28"
+            >
+            <span class="combat-level-value">${combatLevel}</span>
+            <span class="combat-level-label">Combat Level</span>
+          </div>
           <div class="player-stat">
             <span class="label">Total Level</span>
             <span class="value">${formatNumber(overall.level)}</span>
