@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OSRS Player Stats Comparison</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="page-wrap">
+    <header class="site-header">
+      <h1>Potato Scores</h1>
+      <p class="subtitle">Old School RuneScape Hiscores</p>
+    </header>
+
+    <section class="osrs-panel summary-panel">
+      <div class="osrs-panel-top"></div>
+      <div class="osrs-panel-body">
+        <div class="player-summary" id="player-summary">
+          <div class="loading-panel">
+            <div class="loading-spinner"></div>
+            <p>Loading hiscores from Lumbridge...</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="osrs-panel stats-panel">
+      <div class="osrs-panel-top"></div>
+      <div class="osrs-panel-body">
+        <div class="panel-header">
+          <span class="panel-title">Skill Comparison</span>
+          <button class="osrs-button" id="refresh-btn" type="button" disabled><span>Refresh</span></button>
+        </div>
+        <div class="table-wrap" id="stats-table">
+          <p class="placeholder-text">Fetching player data...</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p>Data from the official <a href="https://secure.runescape.com/m=hiscore_oldschool/" target="_blank" rel="noopener">OSRS Hiscores</a></p>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
