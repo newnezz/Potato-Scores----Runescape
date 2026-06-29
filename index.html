@@ -9,10 +9,29 @@
 <body>
   <div class="page-wrap">
     <header class="site-header">
-      <h1>Potato Scores</h1>
-      <p class="subtitle">Old School RuneScape Hiscores</p>
+      <img
+        class="header-emote header-emote-left"
+        id="header-emote-left"
+        src=""
+        alt=""
+        width="72"
+        height="96"
+      >
+      <div class="header-title">
+        <h1>Potato Scores</h1>
+        <p class="subtitle">Old School RuneScape Hiscores</p>
+      </div>
+      <img
+        class="header-emote header-emote-right"
+        id="header-emote-right"
+        src=""
+        alt=""
+        width="72"
+        height="96"
+      >
     </header>
 
+    <div id="main-view">
     <section class="osrs-panel summary-panel">
       <div class="osrs-panel-top"></div>
       <div class="osrs-panel-body">
@@ -32,9 +51,24 @@
           <span class="panel-title">Skill Comparison</span>
           <button class="osrs-button" id="refresh-btn" type="button" disabled><span>Refresh</span></button>
         </div>
+        <div class="gap-highlight" id="gap-highlight" hidden></div>
+        <nav class="skill-tabs" id="skill-tabs" aria-label="Skill categories" hidden></nav>
         <div class="table-wrap" id="stats-table">
           <p class="placeholder-text">Fetching player data...</p>
         </div>
+      </div>
+    </section>
+    </div>
+
+    <section class="osrs-panel player-detail-panel" id="player-detail-view" hidden>
+      <div class="osrs-panel-top"></div>
+      <div class="osrs-panel-body">
+        <div class="panel-header panel-header--detail">
+          <button class="osrs-button" id="back-btn" type="button"><span>← Back</span></button>
+          <span class="panel-title" id="player-detail-title">Player Details</span>
+        </div>
+        <div class="player-detail-summary" id="player-detail-summary"></div>
+        <div class="table-wrap" id="player-detail-table"></div>
       </div>
     </section>
 

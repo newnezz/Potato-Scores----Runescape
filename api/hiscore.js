@@ -1,5 +1,8 @@
-const JAGEX_API =
-  "https://secure.runescape.com/m=hiscore_oldschool/index_lite.json?player=";
+import { fetchPlayerHiscore } from "../lib/hiscore.js";
+
+export const config = {
+  maxDuration: 30,
+};
 
 export default async function handler(req, res) {
   const player = req.query.player;
@@ -9,23 +12,16 @@ export default async function handler(req, res) {
   }
 
   try {
-    const response = await fetch(JAGEX_API + encodeURIComponent(player));
-
-    if (!response.ok) {
-      return res
-        .status(response.status)
-        .json({ error: `Jagex API returned ${response.status}` });
-    }
-
-    const data = await response.json();
-
-    if (!data.skills || !Array.isArray(data.skills)) {
-      return res.status(502).json({ error: "Invalid response from Jagex API" });
-    }
-
+    const data = await fetchPlayerHiscore(player);
+    res.setHeader(
+      "Cache-Control",
+      "public, s-maxage=120, stale-while-revalidate=300"
+    );
     return res.status(200).json(data);
   } catch (error) {
-    return res.status(500).json({
+    const isTimeout =
+      error.message?.includes("timed out") || error.name === "AbortError";
+    return res.status(isTimeout ? 504 : 502).json({
       error: error.message || "Failed to fetch hiscores",
     });
   }

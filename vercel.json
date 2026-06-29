@@ -1,4 +1,12 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "outputDirectory": "."
+  "outputDirectory": ".",
+  "functions": {
+    "api/hiscore.js": {
+      "maxDuration": 30
+    },
+    "api/hiscores.js": {
+      "maxDuration": 30
+    }
+  }
 }
